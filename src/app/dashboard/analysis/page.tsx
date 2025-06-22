@@ -1,8 +1,9 @@
 'use client'
+import dynamic from 'next/dynamic'
 
-import SentimentChart from '@/components/SentimentChart'
-import CustomBarChart from '@/components/CustomBarChart'
-import Top5BulananChart from '@/components/Top5BulananChart'
+const SentimentChart = dynamic(() => import('@/components/SentimentChart'), { ssr: false })
+const CustomBarChart = dynamic(() => import('@/components/CustomBarChart'), { ssr: false })
+const Top5BulananChart = dynamic(() => import('@/components/Top5BulananChart'), { ssr: false })
 
 import { useState, useRef } from 'react'
 import { UploadCloud, BarChart2 } from 'lucide-react'
