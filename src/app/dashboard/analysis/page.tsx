@@ -5,7 +5,7 @@ const SentimentChart = dynamic(() => import('@/components/SentimentChart'), { ss
 const CustomBarChart = dynamic(() => import('@/components/CustomBarChart'), { ssr: false })
 const Top5BulananChart = dynamic(() => import('@/components/Top5BulananChart'), { ssr: false })
 
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { UploadCloud, BarChart2 } from 'lucide-react'
 import {
   Chart as ChartJS,
@@ -46,31 +46,43 @@ interface RawDataItem {
 
 
 export default function AnalysisPage() {
-  const [file, setFile] = useState<File | null>(null)
   const [results, setResults] = useState<SentimentResult[]>([])
   const [sentimentChart, setSentimentChart] = useState<Record<string, number>>({})
   const [negatifPerSektor, setNegatifPerSektor] = useState<Record<string, number>>({})
   const [negatifPerBulan, setNegatifPerBulan] = useState<NegatifPerBulanItem[]>([])
   const [top5Bulanan, setTop5Bulanan] = useState<Top5Bulanan>({ labels: [], datasets: [] })
   const [loading, setLoading] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [files, setFiles] = useState<{ name: string; url: string }[]>([])
+  const [selectedFile, setSelectedFile] = useState<string | null>(null) 
 
-  const handleUpload = async () => {
-    if (!file) return
+  useEffect(() => {
+    const fetchFiles = async () => {
+      const res = await fetch('http://localhost:5001/files')
+      const data = await res.json()
+      setFiles(data)
+    }
+    fetchFiles()
+  }, [])
+
+  const handleAnalyze = async () => {
+    if (!selectedFile) return
     setLoading(true)
-
-    const formData = new FormData()
-    formData.append('file', file)
 
     try {
       const res = await fetch('http://localhost:5001/predict', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ file_url: selectedFile })
       })
 
-      if (!res.ok) throw new Error('Failed to analyze')
+      if (!res.ok) {
+        const errorText = await res.text()
+        console.error('Failed response:', errorText)
+        throw new Error('Failed to analyze')
+      }
 
       const result = await res.json()
+      console.log("API Result:", result)
       setResults(
         (result.data as RawDataItem[]).map((item) => ({
           text: item.ulasan || '-',
@@ -82,14 +94,12 @@ export default function AnalysisPage() {
               : 'Negative',
         }))
       )
-      console.log('top5_bulanan:', result.top5_bulanan)
-
       setSentimentChart(result.chart)
       setNegatifPerSektor(result.negatif_per_sektor)
       setNegatifPerBulan(result.negatif_per_bulan)
       setTop5Bulanan(result.top5_bulanan)
     } catch (error) {
-      console.error('Upload error:', error)
+      console.error('Analyze error:', error)
     } finally {
       setLoading(false)
     }
@@ -106,31 +116,25 @@ export default function AnalysisPage() {
         </h2>
 
         <div className="mb-4">
-          <span className="text-black font-medium">Pilih file</span>
-          <div className="flex items-center gap-4 mt-2">
-            <button
-              type="button"
-              className="bg-[#F9F7F0] border border-[#F9F7F0] rounded-lg px-4 py-2 text-sm text-black shadow-sm hover:bg-gray-200 transition"
-              onClick={() => inputRef.current?.click()}
-            >
-              Cari
-            </button>
-            <span className="text-sm text-gray-600 truncate max-w-xs">
-              {file ? file.name : 'Tidak ada file yang dipilih'}
-            </span>
-          </div>
-
-          <input
-            type="file"
-            accept=".csv,.xlsx"
-            ref={inputRef}
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-            className="hidden"
-          />
+          <span className="text-black font-medium">Pilih file dari Supabase</span>
+          <select
+            onChange={(e) => setSelectedFile(e.target.value)}
+            className="mt-2 w-full border rounded-lg px-4 py-2 text-black"
+            value={selectedFile ?? ''}
+          >
+            <option value="" disabled>
+              Pilih file...
+            </option>
+            {files.map((file) => (
+              <option key={file.url} value={file.url}>
+                {file.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <button
-          onClick={handleUpload}
+          onClick={handleAnalyze}
           className="w-full bg-[#F9F7F0] hover:bg-gray-200 text-black py-2.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
         >
           {loading ? 'Menganalisis...' : 'Analisis'}

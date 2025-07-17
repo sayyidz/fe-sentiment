@@ -1,7 +1,30 @@
-import { LayoutDashboard } from 'lucide-react'
+'use client'
+
+// import { LayoutDashboard } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import TopFilesChart from '@/components/TopFilesChart'
 import Link from 'next/link'
+interface TopFile {
+  name: string
+  count: number
+}
 
 export default function DashboardPage() {
+  const [topFiles, setTopFiles] = useState<TopFile[]>([])
+
+  useEffect(() => {
+    const fetchTopFiles = async () => {
+      try {
+        const res = await fetch('http://localhost:5001/top-files')
+        const data = await res.json()
+        setTopFiles(data)
+      } catch (err) {
+        console.error('Gagal mengambil data:', err)
+      }
+    }
+    fetchTopFiles()
+  }, [])
+
   return (
     <div className="max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold text-black mb-4">
@@ -37,27 +60,13 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <h2 className="text-lg font-semibold flex items-center gap-2 text-gray-800 mb-4">
-  <LayoutDashboard size={24} /> Overview
-</h2>
-
-<p className="text-black leading-relaxed">
-  Sentiment Analysis adalah platform analisis sentimen yang memungkinkan Anda mengunggah dataset ulasan atau
-  menguji satu kalimat secara langsung untuk mengetahui apakah suatu teks bersifat positif, negatif,
-  atau netral.
-</p>
-
-<ul className="list-disc list-inside text-black mt-4 space-y-1">
-  <li>📊 Unggah file dan dapatkan grafik serta klasifikasi sentimen.</li>
-  <li>💬 Uji kalimat tunggal secara cepat dan akurat.</li>
-  <li>🧠 Didukung oleh model machine learning terkini.</li>
-</ul>
-
-<div className="mt-6 text-center">
-  <p className="text-black font-semibold">
-    Silakan navigasikan melalui sidebar untuk mulai menggunakan fitur.
-  </p>
-</div>
+      <div className="max-w-4xl mx-auto mt-8">
+      {topFiles.length > 0 ? (
+        <TopFilesChart data={topFiles} />
+      ) : (
+        <p className="text-gray-600"></p>
+      )}
+    </div>
 
     </div>
   )

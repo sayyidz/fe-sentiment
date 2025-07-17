@@ -110,7 +110,7 @@ export default function LandingPage() {
               <div className="bg-[#A3BCA6] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
                 <div className="w-full h-48 relative">
                   <Image
-                    src="/login-bg.jpg"
+                    src="/kawahputih.jpg"
                     alt="Kawah Putih"
                     fill
                     className="object-cover"
@@ -129,7 +129,7 @@ export default function LandingPage() {
               <div className="bg-[#C1D5A4] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
                 <div className="w-full h-48 relative">
                   <Image
-                    src="/login-bg1.jpg"
+                    src="/tangkubanperahu.jpg"
                     alt="Tangkuban Perahu"
                     fill
                     className="object-cover"
@@ -148,7 +148,7 @@ export default function LandingPage() {
               <div className="bg-[#ACE1AF] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
                 <div className="w-full h-48 relative">
                   <Image
-                    src="/login-bg3.jpg"
+                    src="/lembangparkzoo.jpg"
                     alt="Lembang Park Zoo"
                     fill
                     className="object-cover"
