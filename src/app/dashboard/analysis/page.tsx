@@ -69,7 +69,7 @@ export default function AnalysisPage() {
     setLoading(true)
 
     try {
-      const res = await fetch('http://localhost:5001/predict', {
+      const res = await fetch('https://be-sentiment-production.up.railway.app/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ file_url: selectedFile })
