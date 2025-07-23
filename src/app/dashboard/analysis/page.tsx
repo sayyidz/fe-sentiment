@@ -57,7 +57,7 @@ export default function AnalysisPage() {
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const res = await fetch('http://localhost:5001/files')
+      const res = await fetch('https://be-sentiment-production.up.railway.app/files')
       const data = await res.json()
       setFiles(data)
     }
@@ -143,32 +143,29 @@ export default function AnalysisPage() {
 
       {results.length > 0 && (
         <div className="space-y-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="">
-              <SentimentChart
+
+          <SentimentChart
                 data={{
                   Positif: sentimentChart?.Positif ?? sentimentChart?.positif ?? 0,
                   Netral: sentimentChart?.Netral ?? sentimentChart?.netral ?? 0,
                   Negatif: sentimentChart?.Negatif ?? sentimentChart?.negatif ?? 0,
                 }}
               />
-            </div>
-
-            <div className="">
-              <CustomBarChart
-                title="Komentar Negatif per Sektor"
-                labels={Object.keys(negatifPerSektor)}
-                data={Object.values(negatifPerSektor)}
-                color="#f87171"
-              />
-            </div>
-          </div>
 
           <CustomBarChart
-            title="Komentar Negatif per Bulan"
+            title=""
+            labels={Object.keys(negatifPerSektor)}
+            data={Object.values(negatifPerSektor)}
+            color="#f87171"
+            xAxisTitle="Topics"
+          />
+
+          <CustomBarChart
+            title=""
             labels={negatifPerBulan.map(item => item.bulan_tahun)}
             data={negatifPerBulan.map(item => item.jumlah_negatif)}
             color="#a855f7"
+            xAxisTitle="Month"
           />
 
           {top5Bulanan.datasets.length > 0 && <Top5BulananChart data={top5Bulanan} />}

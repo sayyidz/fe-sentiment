@@ -8,13 +8,15 @@ interface CustomBarChartProps {
   labels: string[]
   data: number[]
   color?: string
+  xAxisTitle?: string
 }
 
 export default function CustomBarChart({
   title,
   labels,
   data,
-  color = '#60a5fa', // default ke biru lembut
+  color = '#60a5fa',
+  xAxisTitle,
 }: CustomBarChartProps) {
   const options: ApexOptions = {
     chart: {
@@ -41,7 +43,33 @@ export default function CustomBarChart({
     },
     xaxis: {
       categories: labels,
-      labels: { style: { fontSize: '13px' } },
+      title: {
+        text: xAxisTitle,
+        style: {
+          fontSize: '13px',
+          fontWeight: 'bold',
+        },
+      },
+
+      labels: { 
+        rotate: -45,
+        trim: false,
+        style: { fontSize: '11px' },
+      },
+    },
+    yaxis: {
+      title: {
+        text: 'Number of Reviews',
+        style: {
+          fontSize: '13px',
+          fontWeight: 'bold',
+        },
+      },
+      labels: {
+        style: {
+          fontSize: '11px',
+        },
+      },
     },
     fill: { opacity: 0.85 },
     colors: [color],

@@ -48,13 +48,29 @@ const SentimentChart: React.FC<SentimentChartProps> = ({ data }) => {
     },
     xaxis: {
       categories: ['Positive', 'Neutral', 'Negative'],
+      title: {
+      text: 'Sentiment Label',
+      style: {
+        fontSize: '13px',
+        fontWeight: 600,
+        color: '#374151',
+      },
+    },
       labels: {
         style: {
           fontSize: '13px',
         },
       },
+      
     },
     yaxis: {
+      title: {
+        text: 'Number of Reviews',
+        style: {
+          fontSize: '13px',
+          fontWeight: 'bold',
+        },
+      },
       labels: {
         style: {
           fontSize: '11px',
@@ -77,7 +93,7 @@ const SentimentChart: React.FC<SentimentChartProps> = ({ data }) => {
 
   return (
     <div className="bg-white shadow-lg rounded-2xl p-6">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Distribusi Sentimen</h2>
+      {/* <h2 className="text-xl font-semibold mb-4 text-gray-800">Distribusi Sentimen</h2> */}
       <ReactApexChart options={options} series={series} type="bar" height={350} />
     </div>
   )
