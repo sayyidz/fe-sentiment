@@ -1,8 +1,9 @@
 'use client'
+import dynamic from 'next/dynamic'
 
 // import { LayoutDashboard } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import TopFilesChart from '@/components/TopFilesChart'
+const TopFilesChart = dynamic(() => import('@/components/TopFilesChart'), { ssr: false })
 import Link from 'next/link'
 interface TopFile {
   name: string
