@@ -116,7 +116,7 @@ export default function AnalysisPage() {
         </h2>
 
         <div className="mb-4">
-          <span className="text-black font-medium">Pilih file dari Supabase</span>
+          <span className="text-black font-medium">Pilih file</span>
           <select
             onChange={(e) => setSelectedFile(e.target.value)}
             className="mt-2 w-full border rounded-lg px-4 py-2 text-black"
