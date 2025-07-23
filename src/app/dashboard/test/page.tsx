@@ -27,7 +27,7 @@ export default function TestPage() {
     setResult(null)
 
     try {
-      const res = await fetch('http://localhost:5001/test-sentiment', {
+      const res = await fetch('https://be-sentiment-production.up.railway.app/test-sentiment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
