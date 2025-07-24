@@ -57,7 +57,7 @@ export default function AnalysisPage() {
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const res = await fetch('https://be-sentiment-production.up.railway.app/files')
+      const res = await fetch('https://be-sentiment-production.up.railway.app/files', )
       const data = await res.json()
       setFiles(data)
     }

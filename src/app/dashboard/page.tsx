@@ -16,7 +16,12 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchTopFiles = async () => {
       try {
-        const res = await fetch('https://be-sentiment-production.up.railway.app/top-files')
+        const res = await fetch('https://be-sentiment-production.up.railway.app/top-files', {
+           method: 'GET',
+           headers: {
+             'Content-Type': 'application/json'
+           }
+        })
         const data = await res.json()
         setTopFiles(data)
       } catch (err) {
