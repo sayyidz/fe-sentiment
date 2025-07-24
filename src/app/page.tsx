@@ -194,7 +194,7 @@ export default function LandingPage() {
               <div className="flex flex-col items-center text-center">
                 <div className="w-40 h-40 relative mb-4">
                   <Image
-                    src="/login-bg2.jpg"
+                    src="/haris.jpg"
                     alt="Peneliti 2"
                     fill
                     className="rounded-full object-cover shadow-md"
